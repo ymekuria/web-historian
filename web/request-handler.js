@@ -11,14 +11,15 @@ exports.handleRequest = function (req, res) {
     if ( req.url === '/') {
       httpHelpers.serveAssets(res,'index.html',function(data) {
         res.end(data);
-      }); 
-    } else {
-      httpHelpers.arhivedSites(res, req.url ,function(data) {
-        res.end(data);
-      });
-    }
-  }  
-  
+      }); // if url is in the archive
+    } else if ( httpHelpers.isUrlArchived(req.url, function(isArchived) {
+      console.log(isArchived); }) ) {
+      // do something
+
+      //if not do 404
+    } else if ( !httpHelpers.isUrlArchived(req.url, function(isArchived) {
+      console.log(isArchived); }) ) {
+  }
 
 
 };
