@@ -40,12 +40,26 @@ exports.isUrlInList = function(urlToFind, callback) {
 };
 
 exports.addUrlToList = function(urlToAdd, callback) {
+  console.log('exports path list typeof',exports.paths.list);
   var extended = exports.paths.list.concat(urlToAdd);
   callback(fs.writeFile(extended));
 };
 
-exports.isUrlArchived = function(urlToFind, callback) {
-  callback (_.contains(exports.paths.archivedSites.split("/"), urlToFind));
+exports.isUrlArchived = function(fileToFind, callback) {
+  var found = false;
+  fs.readdir(exports.paths.archivedSites, function(error, files){
+    if (error) {
+      throw error;
+    } else {
+      _.each(files, function(file) {
+      if( fileToFind === file ) {
+        found = true;
+      }
+
+      });
+    }
+  });
+  callback(found);
 };
 
 exports.downloadUrls = function() {
