@@ -35,13 +35,17 @@ exports.readListOfUrls = function(callback) {
   });
 };
 
-exports.isUrlInList = function() {
+exports.isUrlInList = function(urlToFind, callback) {
+  callback (_.contains(exports.paths.list.split("\n"), urlToFind));
 };
 
-exports.addUrlToList = function() {
+exports.addUrlToList = function(urlToAdd, callback) {
+  var extended = exports.paths.list.concat(urlToAdd);
+  callback(fs.writeFile(extended));
 };
 
-exports.isUrlArchived = function() {
+exports.isUrlArchived = function(urlToFind, callback) {
+  callback (_.contains(exports.paths.archivedSites.split("/"), urlToFind));
 };
 
 exports.downloadUrls = function() {

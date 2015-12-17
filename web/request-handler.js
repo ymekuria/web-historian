@@ -13,7 +13,7 @@ exports.handleRequest = function (req, res) {
         res.end(data);
       }); 
     } else {
-      httpHelpers.serveAssets(res, req.url ,function(data) {
+      httpHelpers.arhivedSites(res, req.url ,function(data) {
         res.end(data);
       });
     }
