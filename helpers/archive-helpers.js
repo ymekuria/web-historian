@@ -40,7 +40,6 @@ exports.isUrlInList = function(urlToFind, callback) {
 };
 
 exports.addUrlToList = function(urlToAdd, callback) {
-  console.log('exports path list typeof',exports.paths.list);
   var extended = exports.paths.list.concat(urlToAdd);
   callback(fs.writeFile(extended));
 };
