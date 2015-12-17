@@ -60,7 +60,20 @@ exports.isUrlArchived = function(fileToFind, callback) {
     }
   });
   callback(found);
+  
 };
 
-exports.downloadUrls = function() {
+exports.downloadUrls = function(urlsToDownload) {
+
+_.each(urlsToDownload, function(url){
+
+  fs.writeFile(exports.paths.archivedSites+'/'+url, url, function (error) {
+    if (error) {
+      throw error;
+    }
+
+  });
+}) ;  
+
 };
+
