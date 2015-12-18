@@ -50,15 +50,17 @@ exports.isUrlArchived = function(fileToFind, callback) {
     if (error) {
       throw error;
     } else {
-      _.each(files, function(file) {
-      if( fileToFind === file ) {
-        found = true;
-      }
+      callback(_.contains(files, fileToFind));
 
-      });
+      // _.each(files, function(file) {
+      //   if( fileToFind === file ) {
+      //     found = true;
+      //   }
+
+      // });
     }
   });
-  callback(found);
+ // callback(found);
   
 };
 
