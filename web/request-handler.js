@@ -66,36 +66,47 @@ exports.handleRequest = function (req, res) {
   }//big else
 } //big Get
  else if ( req.method === "POST") {
-  console.log('posting');
+ ;
   //type = form
   //send = { url: url }
   //readFile ??
-    var data = "";
+    var dataStr= "";
+    var url;
     var statusCode = 201; 
     req.on('error', function(err){
-      console.error(err);
-    }).on("data", function(chunk){
-      data += chunk.toString();
-      console.log('on data fn:', data);
-      achive.addUrlToList(trimmedUrl, function(err, data) {
-        if (err) {
-          throw err;
-        } else {
-          console.log('Url added to the sites folder');
+      throw err;
+    })
+
+    req.on("data", function(chunk){
+
+    dataStr += chunk.toString();
+     
+    }) 
+    req.on('end', function(data){
+      //data = JSON.parse(data);
+      // var statusCode = 302;
+      
+      url =dataStr.substr(4) + "\n";
+      
+      fs.appendFile(archive.paths.list, url, function(error){
+        if (error){
+          throw error;
         }
       });
-      //do something with the data
-        //use writfile
-    }).on('end', function(){
-      data = JSON.parse(data);
-      console.log('DATA after JSONparse:', data);
-      res.writeHead(statusCode, httpHelpers.headers);
-      res.write(JSON.stringify({ "data": data}));
-      res.end();
+      res.writeHead(302, httpHelpers.headers);
+      httpHelpers.serveAssets(res, archive.paths.list, '' ,function(error, data){
+        console.log('inside serverASSETS:', archive.paths.list);
+        if (error) {
+          throw error;
+        }
+        res.end();
+      });
+      // res.write(JSON.stringify({ "data": data}));
+      
     });
     
 
- } 
+ }
  /*
  it("should append submitted sites to 'sites.txt'", function(done) {
         var url = "www.example.com";
