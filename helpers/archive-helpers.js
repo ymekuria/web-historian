@@ -41,23 +41,16 @@ exports.isUrlInList = function(urlToFind, callback) {
 
 exports.addUrlToList = function(urlToAdd, callback) {
   var extended = exports.paths.list.concat(urlToAdd);
-  callback(fs.writeFile(extended));
+  callback(null, fs.writeFile(extended));
 };
 
 exports.isUrlArchived = function(fileToFind, callback) {
   var found = false;
   fs.readdir(exports.paths.archivedSites, function(error, files){
     if (error) {
-      throw error;
+      callback(error);
     } else {
-      callback(_.contains(files, fileToFind));
-
-      // _.each(files, function(file) {
-      //   if( fileToFind === file ) {
-      //     found = true;
-      //   }
-
-      // });
+      callback(null, _.contains(files, fileToFind));
     }
   });
  // callback(found);

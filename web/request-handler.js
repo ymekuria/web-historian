@@ -65,44 +65,73 @@ exports.handleRequest = function (req, res) {
     }); //readdir
   }//big else
 } //big Get
+ else if ( req.method === "POST") {
+  console.log('posting');
+  //type = form
+  //send = { url: url }
+  //readFile ??
+    var data = "";
+    var statusCode = 201; 
+    req.on('error', function(err){
+      console.error(err);
+    }).on("data", function(chunk){
+      data += chunk.toString();
+      console.log('on data fn:', data);
+      achive.addUrlToList(trimmedUrl, function(err, data) {
+        if (err) {
+          throw err;
+        } else {
+          console.log('Url added to the sites folder');
+        }
+      });
+      //do something with the data
+        //use writfile
+    }).on('end', function(){
+      data = JSON.parse(data);
+      console.log('DATA after JSONparse:', data);
+      res.writeHead(statusCode, httpHelpers.headers);
+      res.write(JSON.stringify({ "data": data}));
+      res.end();
+    });
+    
+
+ } 
+ /*
+ it("should append submitted sites to 'sites.txt'", function(done) {
+        var url = "www.example.com";
+
+        // Reset the test file and process request
+        fs.closeSync(fs.openSync(archive.paths.list, "w"));
+
+        request
+          .post("/")
+          .type('form')
+          .send({ url: url })
+          .expect(302, function (err) {
+            if (!err) {
+              var fileContents = fs.readFileSync(archive.paths.list, 'utf8');
+              expect(fileContents).to.equal(url + "\n");
+            }
+*/
 }; //handle request
 
   
 
+//ISURLARCHIVED FAIL:
+// else {
+//       if (!isURL) {
+//         console.log('not matching');
+//         res.writeHead(404,httpHelpers.headers);
+//         res.end();
+//       } else {
+//         httpHelpers.serveAssets(res, archive.paths.archivedSites, slicedUrl, function(error, data) {
+//             if (error) {
+//               throw error;
+//             } else {
+//               res.writeHead(200,httpHelpers.headers);
+//               res.end(data);
+//             }
+//           });
+//       }
 
-
-
-    // if ( !isURL ) {
-  
-
-    // } else if ( isURL ) {
-    //   //magic happens
-    //   console.log('url exists, before paths', req.url);
-    //   var path = archive.archivedSites + '/' + req.url;
-    //   console.log('path:', path);
-    //   console.log('inside of isURL-true');
-    //   res.writeHead(200, httpHelpers.headers);
-    //   //get into sites/google folder
-      
-     
-      
-    //   fs.readFile(path, function(error,data){
-    //     if (error) {
-    //       throw error;
-    //     } else {
-    //       res.end(data);
-    //     }
-    //   });
-
-        //read contents of the google file in here
-          //return contents
-
-
-
-// !httpHelpers.isUrlInList(req.url, function() {
-//       console.log(true); })
-// var getOptions = function(getRequest, res, asset) {
-//   httpHelpers[getRequest](res, asset, function(data) {
-//     res.end(data);
-//   });
 // };
