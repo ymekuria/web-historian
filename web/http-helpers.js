@@ -17,7 +17,7 @@ exports.serveAssets = function(res, path, asset, callback) {
   // css, or anything that doesn't change often.)
   //res.end(archive.paths.archivedSites);
 
-  fs.readFile(path + '/' + asset, 'utf8', function(error, data) {
+  fs.readFile(path + asset, 'utf8', function(error, data) {
     if (error) {
       callback(error);
     } else {
